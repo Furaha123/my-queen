@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    @apply bg-blush font-sans text-ink antialiased;
+    overflow-x: hidden;
+  }
+  section[id] {
+    scroll-margin-top: 5rem;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  /* Side gutter that also clears phone notches */
+  .gutter {
+    padding-left: max(1rem, env(safe-area-inset-left, 0px));
+    padding-right: max(1rem, env(safe-area-inset-right, 0px));
+  }
+  @media (min-width: 640px) {
+    .gutter {
+      padding-left: max(2rem, env(safe-area-inset-left, 0px));
+      padding-right: max(2rem, env(safe-area-inset-right, 0px));
+    }
+  }
+
+  .card {
+    @apply rounded-3xl bg-white/90 shadow-soft ring-1 ring-rose-100;
+  }
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 font-semibold transition duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-rose-300 active:scale-95;
+  }
+  .btn-primary {
+    @apply btn bg-rose-500 text-white shadow-lg shadow-rose-300/40 hover:-translate-y-0.5 hover:bg-rose-600;
+  }
+  .btn-ghost {
+    @apply btn bg-white text-rose-700 ring-1 ring-rose-200 hover:bg-rose-50;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-2 rounded-full bg-rose-100/80 px-4 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-rose-700;
+  }
+  .paper {
+    background-color: #fffdfb;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0,
+      transparent 2.15rem,
+      rgba(225, 120, 150, 0.14) 2.15rem,
+      rgba(225, 120, 150, 0.14) calc(2.15rem + 1px)
+    );
+  }
+}
+
+/* ---------- Animations (kept light on purpose) ---------- */
+@keyframes float-up {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  12% { opacity: var(--o, 0.3); }
+  85% { opacity: var(--o, 0.3); }
+  100% { transform: translateY(-115vh) rotate(25deg); opacity: 0; }
+}
+.floating-heart {
+  position: absolute;
+  bottom: -40px;
+  animation: float-up linear infinite;
+  will-change: transform;
+}
+
+@keyframes burst {
+  0% { transform: translate(0, 0) scale(0.3) rotate(0deg); opacity: 1; }
+  70% { opacity: 1; }
+  100% { transform: translate(var(--x), var(--y)) scale(1) rotate(var(--r)); opacity: 0; }
+}
+.heart-burst {
+  animation: burst 1.8s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.97); }
+  to { opacity: 1; transform: none; }
+}
+.pop-in { animation: pop-in 0.45s ease-out both; }
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-8deg); }
+  75% { transform: rotate(8deg); }
+}
+.wiggle { animation: wiggle 0.3s ease-in-out 2; }
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.hero-in { animation: fade-up 0.8s ease-out both; }
+
+/* Scroll reveal only where the browser supports it natively; otherwise content is simply visible. */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: fade-up linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .floating-heart, .heart-burst { display: none; }
+}

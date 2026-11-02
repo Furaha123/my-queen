@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.DS_Store
+
+# Full-length copyrighted source track — only the trimmed public/our-song.mp3 clip is published
+src/*.mp3
+src/*.wav
+src/*.m4a
